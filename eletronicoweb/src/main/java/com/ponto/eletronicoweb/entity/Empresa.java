@@ -19,7 +19,7 @@ public class Empresa {
 	
 	private String razaoSocial;
 	
-	@DBRef
+	@DBRef(lazy = false)
 	private List<Filial> filiais;
 	
 	//Getters and Setters
