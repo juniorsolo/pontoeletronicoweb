@@ -1,6 +1,10 @@
 package com.ponto.eletronicoweb.service.impl;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ponto.eletronicoweb.entity.Empresa;
@@ -18,46 +22,53 @@ public class EmpresaServiceimpl implements EmpresaService{
 
 	@Override
 	public Empresa createOrUpdate(Empresa empresa) {
-		if(empresa.getId() == null) {
+		Empresa empresaExistente= null;
+		empresaExistente =  this.findByCnpj( empresa.getCnpj());
+		
+		if(empresaExistente != null) {
+			empresaExistente.setRazaoSocial(empresa.getRazaoSocial());
+			empresaExistente.setFiliais(new ArrayList<>());
 			if(!empresa.getFiliais().isEmpty()) {
 				for (Filial filial : empresa.getFiliais()) {
-					empresa.getFiliais().remove(filial);
-					empresa.getFiliais().add(filialservice.createOrUpdate(filial));
+					if(empresaExistente.getFiliais().stream().filter(f -> f.getNome().equalsIgnoreCase(filial.getNome())).findAny().orElse(null) == null) {
+						empresaExistente.getFiliais().add(filialservice.createOrUpdate(filial));
+					}
 				}
 			}
-			return empresaRepo.insert(empresa);
+			return empresaRepo.save(empresaExistente);
 		}else {
+		
 			if(!empresa.getFiliais().isEmpty()) {
 				for (Filial filial : empresa.getFiliais()) {
 					empresa.getFiliais().remove(filial);
 					empresa.getFiliais().add(filialservice.createOrUpdate(filial));
 				}
 			}
-			return empresaRepo.save(empresa);
 		}
+		return empresaRepo.save(empresa);
 	}
 		
 
 	@Override
 	public Empresa findById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return empresaRepo.findById(id).orElse(null);
 	}
 
+	@Override
+	public Empresa findByCnpj(Long cnpj) {
+		Empresa empresa = empresaRepo.findByCnpj(cnpj);
+		return empresa;
+	}
+	
 	@Override
 	public void delete(String id) {
-		// TODO Auto-generated method stub
-		
+		empresaRepo.deleteById(id);		
 	}
 
 	@Override
-	public Iterable<Empresa> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterable<Empresa> findAll(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		return empresaRepo.findAll(pageable);
 	}
-	
-	
-	
-	
 	
 }

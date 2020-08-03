@@ -1,41 +1,66 @@
 package com.ponto.eletronicoweb.controllers;
 
-import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ponto.eletronicoweb.entity.Empresa;
-import com.ponto.eletronicoweb.entity.Filial;
+import com.ponto.eletronicoweb.response.Response;
 import com.ponto.eletronicoweb.service.impl.EmpresaServiceimpl;
 
 @RestController
+@RequestMapping("/api/empresa")
 @CrossOrigin(origins = "*")
 public class ControllerAplication {
 	
 	@Autowired
 	private EmpresaServiceimpl empresaService;
 
-	@RequestMapping("/")
-	public String home2() {
-		return "welcome to home /";
+	
+	
+	@PostMapping()	
+	public ResponseEntity<Response<Empresa>> create(@RequestBody Empresa empresa, BindingResult result) {
+		Response<Empresa> response = new Response<>();	
+		 try {
+			 
+			 empresa = empresaService.createOrUpdate(empresa);
+			 response.setData(empresa);
+		 }catch (Exception e) {
+			response.getErrors().add(e.getMessage());
+			return ResponseEntity.badRequest().body(response);
+		}
+		return ResponseEntity.ok(response);
 	}
-	@RequestMapping("/index")	
-	public String home3() {
-		 Empresa e = new Empresa();
-		 e.setCnpj(12345678901234L);
-		 e.setRazaoSocial("Ótica Mendonça");
-		 
-		 Filial f = new Filial();
-		 f.setNome("M1");
-		 e.setFiliais(new ArrayList<>());
-		 e.getFiliais().add(f);
-		 
-		 e = empresaService.createOrUpdate(e);
-		 empresaService.createOrUpdate(e);
-		return "welcome to home index";
+	
+	@GetMapping(value= "{id}")
+	public ResponseEntity<Response<Empresa>> findById(@PathVariable("id") String id){
+		Response<Empresa> response = new Response<>();
+		try {
+			Empresa e = empresaService.findById(id);
+			response.setData(e);
+		}catch (Exception e) {
+			return ResponseEntity.badRequest().body(response);
+		}
+		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping(value= "cnpj/{cnpj}")
+	public ResponseEntity<Response<Empresa>> findByCnpj(@PathVariable("cnpj") Long cnpj){
+		Response<Empresa> response = new Response<>();
+		try {
+			Empresa e = empresaService.findByCnpj(cnpj);
+			response.setData(e);
+		}catch (Exception e) {
+			return ResponseEntity.badRequest().body(response);
+		}
+		return ResponseEntity.ok(response);
 	}
 }
  

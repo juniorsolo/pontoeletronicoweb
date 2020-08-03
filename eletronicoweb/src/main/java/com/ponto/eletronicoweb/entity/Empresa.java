@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.mongodb.lang.NonNull;
+
 @Document
 public class Empresa {
 	
@@ -14,9 +16,11 @@ public class Empresa {
 	private String id;
 	
 	//14
+	@NonNull
 	@Indexed(unique = true)
 	private Long cnpj;
 	
+	@NonNull
 	private String razaoSocial;
 	
 	@DBRef(lazy = false)

@@ -11,4 +11,5 @@ import com.ponto.eletronicoweb.entity.Empresa;
  */
 public interface EmpresaRepository extends MongoRepository<Empresa, String>{
 	
+	Empresa findByCnpj(Long cnpj);
 }
