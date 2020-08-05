@@ -1,20 +1,22 @@
 package com.ponto.eletronicoweb.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ponto.eletronicoweb.entity.Filial;
+import com.ponto.eletronicoweb.entity.Subsidiary;
 import com.ponto.eletronicoweb.repository.FilialRepository;
-import com.ponto.eletronicoweb.service.FilialService;
+import com.ponto.eletronicoweb.service.SubsidiaryService;
 
 @Service
-public class FilialServiceimpl implements FilialService{
+public class SubsidiaryServiceImpl implements SubsidiaryService{
 	
 	@Autowired
 	private FilialRepository filialRepo;
 	
 	@Override
-	public Filial createOrUpdate(Filial filial) {
+	public Subsidiary createOrUpdate(Subsidiary filial) {
 		if(filial.getId() == null) {
 			return filialRepo.insert(filial);
 		}
@@ -22,9 +24,8 @@ public class FilialServiceimpl implements FilialService{
 	}
 
 	@Override
-	public Filial findById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Optional<Subsidiary> findById(String id) {
+		return filialRepo.findById(id);
 	}
 
 	@Override
@@ -34,7 +35,7 @@ public class FilialServiceimpl implements FilialService{
 	}
 
 	@Override
-	public Iterable<Filial> findAll() {
+	public Iterable<Subsidiary> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}

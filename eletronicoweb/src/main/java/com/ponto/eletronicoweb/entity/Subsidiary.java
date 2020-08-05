@@ -4,14 +4,16 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class Filial {
+public class Subsidiary {
 	
 	@Id
 	private String id;
 	
-	private String nome;
+	private String name;
 	
-
+	
+	//Getters and Setters
+	
 	public String getId() {
 		return id;
 	}
@@ -20,13 +22,14 @@ public class Filial {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
+
 	
 	
 }
