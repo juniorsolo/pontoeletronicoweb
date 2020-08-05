@@ -1,7 +1,8 @@
 package com.ponto.eletronicoweb.service.impl;
 
-import java.util.ArrayList;
+import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import com.ponto.eletronicoweb.entity.Empresa;
 import com.ponto.eletronicoweb.entity.Filial;
 import com.ponto.eletronicoweb.repository.EmpresaRepository;
 import com.ponto.eletronicoweb.service.EmpresaService;
+import com.ponto.eletronicoweb.service.ServiceException;
 
 @Service
 public class EmpresaServiceimpl implements EmpresaService{
@@ -21,43 +23,55 @@ public class EmpresaServiceimpl implements EmpresaService{
 	private FilialServiceimpl filialservice;
 
 	@Override
-	public Empresa createOrUpdate(Empresa empresa) {
+	public Empresa create(Empresa empresa) throws Exception {
 		Empresa empresaExistente= null;
 		empresaExistente =  this.findByCnpj( empresa.getCnpj());
 		
-		if(empresaExistente != null) {
-			empresaExistente.setRazaoSocial(empresa.getRazaoSocial());
-			empresaExistente.setFiliais(new ArrayList<>());
-			if(!empresa.getFiliais().isEmpty()) {
-				for (Filial filial : empresa.getFiliais()) {
-					if(empresaExistente.getFiliais().stream().filter(f -> f.getNome().equalsIgnoreCase(filial.getNome())).findAny().orElse(null) == null) {
-						empresaExistente.getFiliais().add(filialservice.createOrUpdate(filial));
-					}
-				}
-			}
-			return empresaRepo.save(empresaExistente);
-		}else {
+		if(!StringUtils.isAllBlank(empresa.getId()) || empresaExistente != null) {
+			throw new ServiceException("Empresa can't be create");
+		}
 		
-			if(!empresa.getFiliais().isEmpty()) {
-				for (Filial filial : empresa.getFiliais()) {
-					empresa.getFiliais().remove(filial);
-					empresa.getFiliais().add(filialservice.createOrUpdate(filial));
-				}
+		
+		if(!empresa.getFiliais().isEmpty()) {
+			for (Filial filial : empresa.getFiliais()) {
+				empresa.getFiliais().remove(filial);
+				empresa.getFiliais().add(filialservice.createOrUpdate(filial));
 			}
 		}
+		
 		return empresaRepo.save(empresa);
 	}
-		
-
+	
 	@Override
-	public Empresa findById(String id) {
-		return empresaRepo.findById(id).orElse(null);
+	public Empresa update(Empresa empresa) throws Exception {
+		Optional<Empresa> empresaExistente= null;
+		try {
+			if(StringUtils.isAllBlank(empresa.getId())) {
+				throw new ServiceException("Id is empty, empresa can't be updated");
+			}
+			empresaExistente =  this.findById(empresa.getId());
+			if(!empresaExistente.isPresent()) {
+				throw new ServiceException("Empresa not exist, can't be updated");
+			}
+			empresaExistente.get().setCnpj(empresa.getCnpj());
+			empresaExistente.get().setRazaoSocial(empresa.getRazaoSocial());
+			empresaExistente.get().setFiliais(empresa.getFiliais());
+			
+			return empresaRepo.save(empresaExistente.get());
+		}catch (Exception e) {
+			throw new ServiceException("Error: "+ e.getMessage());
+		}
+	}
+	
+	@Override
+	public Optional<Empresa> findById(String id) {
+		return empresaRepo.findById(id);
 	}
 
 	@Override
 	public Empresa findByCnpj(Long cnpj) {
-		Empresa empresa = empresaRepo.findByCnpj(cnpj);
-		return empresa;
+		return empresaRepo.findByCnpj(cnpj);
+		 
 	}
 	
 	@Override
