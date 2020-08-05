@@ -9,6 +9,8 @@ import com.ponto.eletronicoweb.entity.Subsidiary;
  * @author junior 16/07/2020
  *
  */
-public interface FilialRepository extends MongoRepository<Subsidiary, String> {
+public interface SubsidiaryRepository extends MongoRepository<Subsidiary, String> {
+	
+	Iterable<Subsidiary> findByCompanyId(String id);
 	
 }

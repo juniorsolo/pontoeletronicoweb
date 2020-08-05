@@ -1,6 +1,7 @@
 package com.ponto.eletronicoweb.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -10,6 +11,9 @@ public class Subsidiary {
 	private String id;
 	
 	private String name;
+	
+	@DBRef
+	private Company company;
 	
 	
 	//Getters and Setters
@@ -28,6 +32,14 @@ public class Subsidiary {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	

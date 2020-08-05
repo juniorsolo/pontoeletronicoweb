@@ -14,6 +14,11 @@ import com.ponto.eletronicoweb.repository.CompanyRepository;
 import com.ponto.eletronicoweb.service.CompanyService;
 import com.ponto.eletronicoweb.service.ServiceException;
 
+/**
+ * 
+ * @author junior
+ *
+ */
 @Service
 public class CompanyServiceImpl implements CompanyService{
 	
@@ -35,7 +40,7 @@ public class CompanyServiceImpl implements CompanyService{
 		if(!company.getSubsidiaryList().isEmpty()) {
 			for (Subsidiary filial : company.getSubsidiaryList()) {
 				company.getSubsidiaryList().remove(filial);
-				company.getSubsidiaryList().add(filialservice.createOrUpdate(filial));
+				company.getSubsidiaryList().add(filialservice.create(filial));
 			}
 		}
 		

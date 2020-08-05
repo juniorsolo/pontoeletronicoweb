@@ -2,42 +2,63 @@ package com.ponto.eletronicoweb.service.impl;
 
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ponto.eletronicoweb.entity.Subsidiary;
-import com.ponto.eletronicoweb.repository.FilialRepository;
+import com.ponto.eletronicoweb.repository.SubsidiaryRepository;
+import com.ponto.eletronicoweb.service.ServiceException;
 import com.ponto.eletronicoweb.service.SubsidiaryService;
 
+/**
+ * 
+ * @author junior
+ *
+ */
 @Service
 public class SubsidiaryServiceImpl implements SubsidiaryService{
 	
 	@Autowired
-	private FilialRepository filialRepo;
+	private SubsidiaryRepository subsidiaryRepo;
 	
 	@Override
-	public Subsidiary createOrUpdate(Subsidiary filial) {
-		if(filial.getId() == null) {
-			return filialRepo.insert(filial);
+	public Subsidiary create(Subsidiary filial) throws Exception{
+		if(filial == null || StringUtils.isAllBlank(filial.getId())) {
+			throw new ServiceException("Subsidiary`s can`t be create.");
 		}
-		return filialRepo.save(filial);
+	
+		return subsidiaryRepo.save(filial);
 	}
-
+	
+	@Override
+	public Subsidiary update(Subsidiary filial) throws Exception{
+		if(StringUtils.isAllBlank(filial.getId())) {
+			throw new ServiceException("Can't updated subsidiary, ID is null or empty.");
+		}
+		return subsidiaryRepo.save(filial);
+	}
+	
 	@Override
 	public Optional<Subsidiary> findById(String id) {
-		return filialRepo.findById(id);
+		return subsidiaryRepo.findById(id);
 	}
 
 	@Override
-	public void delete(String id) {
-		// TODO Auto-generated method stub
-		
+	public void delete(String id) {		
+		subsidiaryRepo.deleteById(id);		
 	}
 
 	@Override
-	public Iterable<Subsidiary> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterable<Subsidiary> findAll() {		
+		return subsidiaryRepo.findAll();
 	}
+
+	@Override
+	public Iterable<Subsidiary> findByCompanyById(String id) {
+		return subsidiaryRepo.findByCompanyId(id);
+	}
+	
+
 	
 }
