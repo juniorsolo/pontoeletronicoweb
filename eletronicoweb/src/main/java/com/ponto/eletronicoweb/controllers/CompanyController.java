@@ -3,6 +3,7 @@ package com.ponto.eletronicoweb.controllers;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -26,9 +27,10 @@ import com.ponto.eletronicoweb.service.impl.CompanyServiceImpl;
 @CrossOrigin(origins = "*")
 public class CompanyController {
 	
+	org.slf4j.Logger log = LoggerFactory.getLogger(CompanyController.class);
+	
 	@Autowired
 	private CompanyServiceImpl companyService;
-
 	
 	
 	@PostMapping()	
@@ -44,6 +46,7 @@ public class CompanyController {
 			 response.setData(company);
 		 }catch (Exception e) {
 			response.getErrors().add("Company it can't be create. " + e.getMessage());
+			log.error(e.getMessage());
 			return ResponseEntity.badRequest().body(response);
 		}
 		return ResponseEntity.ok(response);

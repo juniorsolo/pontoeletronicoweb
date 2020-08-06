@@ -24,7 +24,7 @@ public class SubsidiaryServiceImpl implements SubsidiaryService{
 	
 	@Override
 	public Subsidiary create(Subsidiary filial) throws Exception{
-		if(filial == null || StringUtils.isAllBlank(filial.getId())) {
+		if(filial == null || !StringUtils.isAllBlank(filial.getId())) {
 			throw new ServiceException("Subsidiary`s can`t be create.");
 		}
 	

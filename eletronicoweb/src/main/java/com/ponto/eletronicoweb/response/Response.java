@@ -19,7 +19,7 @@ public class Response<T> {
 
 	public List<String> getErrors() {
 		if(errors == null) {
-			return new ArrayList<>();
+			errors = new ArrayList<>();
 		}
 		return errors;
 	}

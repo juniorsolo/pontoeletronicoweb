@@ -33,7 +33,7 @@ public class CompanyServiceImpl implements CompanyService{
 		companyExist =  this.findByRegisterNumber((company.getRegisterNumber()));
 		
 		if(!StringUtils.isAllBlank(company.getId()) || companyExist != null) {
-			throw new ServiceException("corporation can't be create");
+			throw new ServiceException("Company can't be create");
 		}
 		
 		
