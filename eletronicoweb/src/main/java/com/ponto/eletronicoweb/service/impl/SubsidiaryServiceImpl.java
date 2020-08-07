@@ -53,11 +53,6 @@ public class SubsidiaryServiceImpl implements SubsidiaryService{
 	public Iterable<Subsidiary> findAll() {		
 		return subsidiaryRepo.findAll();
 	}
-
-	@Override
-	public Iterable<Subsidiary> findByCompanyById(String id) {
-		return subsidiaryRepo.findByCompanyId(id);
-	}
 	
 
 	

@@ -1,5 +1,7 @@
 package com.ponto.eletronicoweb.entity;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,11 +12,10 @@ public class Subsidiary {
 	@Id
 	private String id;
 	
-	private String name;
+	private String name;	
 	
-	@DBRef
-	private Company company;
-	
+
+	private List<Employee> employeeList;
 	
 	//Getters and Setters
 	
@@ -34,12 +35,12 @@ public class Subsidiary {
 		this.name = name;
 	}
 
-	public Company getCompany() {
-		return company;
+	public List<Employee> getEmployeeList() {
+		return employeeList;
 	}
 
-	public void setCompany(Company company) {
-		this.company = company;
+	public void setEmployeeList(List<Employee> employeeList) {
+		this.employeeList = employeeList;
 	}
 
 	

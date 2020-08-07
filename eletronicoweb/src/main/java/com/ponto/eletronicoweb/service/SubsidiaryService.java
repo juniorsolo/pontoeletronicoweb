@@ -10,5 +10,4 @@ public interface SubsidiaryService {
 	public Optional<Subsidiary> findById(String id);
 	public void delete(String id);
 	public Iterable<Subsidiary> findAll();
-	public Iterable<Subsidiary> findByCompanyById(String id);
 }
