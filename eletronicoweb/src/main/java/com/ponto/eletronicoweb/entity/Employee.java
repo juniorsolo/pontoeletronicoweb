@@ -1,5 +1,6 @@
 package com.ponto.eletronicoweb.entity;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -8,8 +9,9 @@ public class Employee {
 	private Long documentNumber;
 	private String name;
 	private String occupation;
-	private Integer login;
-	private String password;
+	
+	@DBRef
+	private User user;	
 	
 	
 	//Getters and Setters
@@ -32,18 +34,13 @@ public class Employee {
 	public void setOccupation(String occupation) {
 		this.occupation = occupation;
 	}
-	public Integer getLogin() {
-		return login;
+	public User getUser() {
+		return user;
 	}
-	public void setLogin(Integer login) {
-		this.login = login;
+	public void setUser(User user) {
+		this.user = user;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
+
 	
 	
 }

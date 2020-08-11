@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ponto.eletronicoweb.entity.Employee;
 import com.ponto.eletronicoweb.entity.Subsidiary;
 import com.ponto.eletronicoweb.repository.SubsidiaryRepository;
 import com.ponto.eletronicoweb.service.ServiceException;
@@ -22,13 +23,20 @@ public class SubsidiaryServiceImpl implements SubsidiaryService{
 	@Autowired
 	private SubsidiaryRepository subsidiaryRepo;
 	
+	@Autowired
+	private UserServiceImpl userService;
+	
 	@Override
-	public Subsidiary create(Subsidiary filial) throws Exception{
-		if(filial == null || !StringUtils.isAllBlank(filial.getId())) {
+	public Subsidiary create(Subsidiary subsidiary) throws Exception{
+		if(subsidiary == null || !StringUtils.isAllBlank(subsidiary.getId())) {
 			throw new ServiceException("Subsidiary`s can`t be create.");
 		}
-	
-		return subsidiaryRepo.save(filial);
+		if(!subsidiary.getEmployeeList().isEmpty()) {
+			for(Employee employee : subsidiary.getEmployeeList()) {
+				employee.setUser(userService.create(employee.getUser()));
+			}
+		}
+		return subsidiaryRepo.save(subsidiary);
 	}
 	
 	@Override
@@ -39,6 +47,12 @@ public class SubsidiaryServiceImpl implements SubsidiaryService{
 		Optional<Subsidiary> subsidiaryFind = findById(subsidiary.getId());
 		if(!subsidiaryFind.isPresent()) {
 			throw new ServiceException("Can't updated subsidiary, ID:"+ subsidiary.getId()+" not found.");
+		}
+		
+		if(!subsidiary.getEmployeeList().isEmpty()) {
+			for(Employee employee : subsidiary.getEmployeeList()) {
+				employee.setUser(userService.update(employee.getUser()));
+			}
 		}
 		subsidiaryFind.get().setName(subsidiary.getName());
 		subsidiaryFind.get().setEmployeeList(subsidiary.getEmployeeList());
