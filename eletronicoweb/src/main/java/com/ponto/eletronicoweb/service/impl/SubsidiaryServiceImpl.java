@@ -32,11 +32,18 @@ public class SubsidiaryServiceImpl implements SubsidiaryService{
 	}
 	
 	@Override
-	public Subsidiary update(Subsidiary filial) throws Exception{
-		if(StringUtils.isAllBlank(filial.getId())) {
+	public Subsidiary update(Subsidiary subsidiary) throws Exception{
+		if(subsidiary == null || StringUtils.isAllBlank(subsidiary.getId())) {
 			throw new ServiceException("Can't updated subsidiary, ID is null or empty.");
 		}
-		return subsidiaryRepo.save(filial);
+		Optional<Subsidiary> subsidiaryFind = findById(subsidiary.getId());
+		if(!subsidiaryFind.isPresent()) {
+			throw new ServiceException("Can't updated subsidiary, ID:"+ subsidiary.getId()+" not found.");
+		}
+		subsidiaryFind.get().setName(subsidiary.getName());
+		subsidiaryFind.get().setEmployeeList(subsidiary.getEmployeeList());
+		
+		return subsidiaryRepo.save(subsidiaryFind.get());
 	}
 	
 	@Override

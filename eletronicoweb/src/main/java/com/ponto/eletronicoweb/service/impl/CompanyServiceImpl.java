@@ -1,5 +1,6 @@
 package com.ponto.eletronicoweb.service.impl;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -58,9 +59,15 @@ public class CompanyServiceImpl implements CompanyService{
 			if(!empresaExistente.isPresent()) {
 				throw new ServiceException("Company not exist, can't be updated");
 			}
+			if(!company.getSubsidiaryList().isEmpty()) {
+				empresaExistente.get().setSubsidiaryList(new ArrayList<>());
+
+				for (Subsidiary subsidiary : company.getSubsidiaryList()) {					
+					empresaExistente.get().getSubsidiaryList().add(filialservice.update(subsidiary));
+				}
+			}
 			empresaExistente.get().setRegisterNumber(company.getRegisterNumber());
 			empresaExistente.get().setName(company.getName());
-			empresaExistente.get().setSubsidiaryList(company.getSubsidiaryList());
 			
 			return companyRepo.save(empresaExistente.get());
 		}catch (Exception e) {
