@@ -1,14 +1,10 @@
 package com.ponto.eletronicoweb.entity;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Employee {
-	
-	@Id
-	private String id;
-	
+		
 	private Long documentNumber;
 	private String name;
 	private String occupation;
@@ -17,12 +13,7 @@ public class Employee {
 	
 	
 	//Getters and Setters
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
+
 	public Long getDocumentNumber() {
 		return documentNumber;
 	}

@@ -1,6 +1,7 @@
 package com.ponto.eletronicoweb.service.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -39,8 +40,10 @@ public class CompanyServiceImpl implements CompanyService{
 		
 		
 		if(!company.getSubsidiaryList().isEmpty()) {
-			for (Subsidiary filial : company.getSubsidiaryList()) {
-				company.getSubsidiaryList().remove(filial);
+			List<Subsidiary> subsidiaryList = company.getSubsidiaryList();
+			company.setSubsidiaryList(new ArrayList<>());
+			
+			for (Subsidiary filial : subsidiaryList) {
 				company.getSubsidiaryList().add(filialservice.create(filial));
 			}
 		}
@@ -50,26 +53,26 @@ public class CompanyServiceImpl implements CompanyService{
 	
 	@Override
 	public Company update(Company company) throws Exception {
-		Optional<Company> empresaExistente= null;
+		Optional<Company> companyFinded= null;
 		try {
 			if(StringUtils.isAllBlank(company.getId())) {
 				throw new ServiceException("Id is empty, company can't be updated");
 			}
-			empresaExistente =  this.findById(company.getId());
-			if(!empresaExistente.isPresent()) {
+			companyFinded =  this.findById(company.getId());
+			if(!companyFinded.isPresent()) {
 				throw new ServiceException("Company not exist, can't be updated");
 			}
 			if(!company.getSubsidiaryList().isEmpty()) {
-				empresaExistente.get().setSubsidiaryList(new ArrayList<>());
+				companyFinded.get().setSubsidiaryList(new ArrayList<>());
 
 				for (Subsidiary subsidiary : company.getSubsidiaryList()) {					
-					empresaExistente.get().getSubsidiaryList().add(filialservice.update(subsidiary));
+					companyFinded.get().getSubsidiaryList().add(filialservice.update(subsidiary));
 				}
 			}
-			empresaExistente.get().setRegisterNumber(company.getRegisterNumber());
-			empresaExistente.get().setName(company.getName());
+			companyFinded.get().setRegisterNumber(company.getRegisterNumber());
+			companyFinded.get().setName(company.getName());
 			
-			return companyRepo.save(empresaExistente.get());
+			return companyRepo.save(companyFinded.get());
 		}catch (Exception e) {
 			throw new ServiceException("Error: "+ e.getMessage());
 		}
@@ -87,6 +90,12 @@ public class CompanyServiceImpl implements CompanyService{
 	
 	@Override
 	public void delete(String id) {
+		Optional<Company> companyFinded =  this.findById(id);
+		if(companyFinded.isPresent() && !companyFinded.get().getSubsidiaryList().isEmpty()) {
+			for(Subsidiary sub : companyFinded.get().getSubsidiaryList()){
+				filialservice.delete(sub.getId());
+			}
+		}
 		companyRepo.deleteById(id);		
 	}
 

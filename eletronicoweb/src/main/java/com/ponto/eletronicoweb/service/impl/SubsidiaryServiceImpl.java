@@ -48,6 +48,7 @@ public class SubsidiaryServiceImpl implements SubsidiaryService{
 	
 	@Override
 	public Optional<Subsidiary> findById(String id) {
+		
 		return subsidiaryRepo.findById(id);
 	}
 

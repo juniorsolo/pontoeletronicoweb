@@ -166,6 +166,7 @@ public class CompanyController {
 			}
 			
 			companyService.delete(id);
+			response.setData("Success - id:" + id + " have it deleted");
 						
 		}catch (Exception e) {
 			response.getErrors().add("Error for delete company. " + e.getMessage());
