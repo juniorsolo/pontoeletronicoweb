@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ponto.eletronicoweb.entity.Registry;
 import com.ponto.eletronicoweb.response.Response;
 import com.ponto.eletronicoweb.service.RegistryService;
+import com.ponto.eletronicoweb.service.UserService;
 
 /**
  *     12/08/2020
@@ -34,6 +35,8 @@ public class RegistryController {
 	@Autowired
 	RegistryService registryService;
 	
+	@Autowired
+	UserService userService;
 	
 	@PostMapping
 	public ResponseEntity<Response<Registry>> create(){
@@ -41,6 +44,8 @@ public class RegistryController {
 		try {
 			Registry regis = new Registry();
 			regis.setData(LocalDateTime.now());
+			regis.setUser(userService.findById("5f3315d2d44ead50ef7a2217").get());
+		
 			regis = registryService.create(regis);
 			response.setData(regis);
 		}catch (Exception e) {
