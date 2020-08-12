@@ -13,7 +13,11 @@ import com.ponto.eletronicoweb.repository.UserRepository;
 import com.ponto.eletronicoweb.service.ServiceException;
 import com.ponto.eletronicoweb.service.UserService;
 
-
+/**
+ * 
+ * @author junior 11/08/2020
+ *
+ */
 @Service
 public class UserServiceImpl implements UserService{
 	

@@ -52,7 +52,7 @@ public class SubsidiaryServiceImpl implements SubsidiaryService{
 		}
 		Optional<Subsidiary> subsidiaryFind = findById(subsidiary.getId());
 		if(!subsidiaryFind.isPresent()) {
-			log.error("Can't updated subsidiary, ID:\"+ subsidiary.getId()+\" not found.");
+			log.error("Can't updated subsidiary, ID:"+ subsidiary.getId()+" not found.");
 			throw new ServiceException("Can't updated subsidiary, ID:"+ subsidiary.getId()+" not found.");
 		}
 		
