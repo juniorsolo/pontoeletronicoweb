@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +26,8 @@ import com.ponto.eletronicoweb.service.ServiceException;
 @Service
 public class CompanyServiceImpl implements CompanyService{
 	
+	Logger log = LoggerFactory.getLogger(CompanyServiceImpl.class);
+	
 	@Autowired
 	private CompanyRepository companyRepo;
 	@Autowired
@@ -31,13 +35,20 @@ public class CompanyServiceImpl implements CompanyService{
 
 	@Override
 	public Company create(Company company) throws Exception {
-		Company companyExist= null;
-		companyExist =  this.findByRegisterNumber((company.getRegisterNumber()));
 		
-		if(!StringUtils.isAllBlank(company.getId()) || companyExist != null) {
+		Company companyExist= null;
+		
+		if(!StringUtils.isAllBlank(company.getId())) {
+			log.error("Company can't be create, id null");
 			throw new ServiceException("Company can't be create");
 		}
 		
+		companyExist =  this.findByRegisterNumber((company.getRegisterNumber()));
+		
+		if(companyExist != null) {
+			log.error("Company can't be create, alreay exists.");
+			throw new ServiceException("Company can't be create, alreay exists.");
+		}
 		
 		if(!company.getSubsidiaryList().isEmpty()) {
 			List<Subsidiary> subsidiaryList = company.getSubsidiaryList();
@@ -56,10 +67,12 @@ public class CompanyServiceImpl implements CompanyService{
 		Optional<Company> companyFinded= null;
 		try {
 			if(StringUtils.isAllBlank(company.getId())) {
+				log.error("Id is empty, company can't be updated.");
 				throw new ServiceException("Id is empty, company can't be updated");
 			}
 			companyFinded =  this.findById(company.getId());
 			if(!companyFinded.isPresent()) {
+				log.error("Company not exist, can't be updated.");
 				throw new ServiceException("Company not exist, can't be updated");
 			}
 			if(!company.getSubsidiaryList().isEmpty()) {
@@ -74,6 +87,7 @@ public class CompanyServiceImpl implements CompanyService{
 			
 			return companyRepo.save(companyFinded.get());
 		}catch (Exception e) {
+			log.error("Error from update. " + e.getMessage());
 			throw new ServiceException("Error: "+ e.getMessage());
 		}
 	}

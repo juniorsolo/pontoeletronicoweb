@@ -3,6 +3,8 @@ package com.ponto.eletronicoweb.service.impl;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ import com.ponto.eletronicoweb.service.SubsidiaryService;
 @Service
 public class SubsidiaryServiceImpl implements SubsidiaryService{
 	
+	Logger log = LoggerFactory.getLogger(SubsidiaryServiceImpl.class);
+	
 	@Autowired
 	private SubsidiaryRepository subsidiaryRepo;
 	
@@ -29,7 +33,8 @@ public class SubsidiaryServiceImpl implements SubsidiaryService{
 	@Override
 	public Subsidiary create(Subsidiary subsidiary) throws Exception{
 		if(subsidiary == null || !StringUtils.isAllBlank(subsidiary.getId())) {
-			throw new ServiceException("Subsidiary`s can`t be create.");
+			log.error("Subsidiary can`t be create. Subsidiary or Id is null.");
+			throw new ServiceException("Subsidiary can`t be create. Subsidiary is null or ID not null.");
 		}
 		if(!subsidiary.getEmployeeList().isEmpty()) {
 			for(Employee employee : subsidiary.getEmployeeList()) {
@@ -42,10 +47,12 @@ public class SubsidiaryServiceImpl implements SubsidiaryService{
 	@Override
 	public Subsidiary update(Subsidiary subsidiary) throws Exception{
 		if(subsidiary == null || StringUtils.isAllBlank(subsidiary.getId())) {
+			log.error("Can't updated subsidiary, ID is null or empty.");
 			throw new ServiceException("Can't updated subsidiary, ID is null or empty.");
 		}
 		Optional<Subsidiary> subsidiaryFind = findById(subsidiary.getId());
 		if(!subsidiaryFind.isPresent()) {
+			log.error("Can't updated subsidiary, ID:\"+ subsidiary.getId()+\" not found.");
 			throw new ServiceException("Can't updated subsidiary, ID:"+ subsidiary.getId()+" not found.");
 		}
 		

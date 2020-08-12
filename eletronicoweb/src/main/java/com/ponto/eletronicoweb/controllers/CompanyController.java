@@ -2,6 +2,7 @@ package com.ponto.eletronicoweb.controllers;
 
 import java.util.Optional;
 
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -23,6 +24,12 @@ import com.ponto.eletronicoweb.entity.Company;
 import com.ponto.eletronicoweb.response.Response;
 import com.ponto.eletronicoweb.service.impl.CompanyServiceImpl;
 
+
+/**
+ * 07/08/2020
+ * @author junior
+ *
+ */
 @RestController
 @RequestMapping("/api/company")
 @CrossOrigin(origins = "*")
@@ -47,9 +54,10 @@ public class CompanyController {
 			 response.setData(company);
 		 }catch (Exception e) {
 			response.getErrors().add("Company it can't be create. " + e.getMessage());
-			log.error(e.getMessage());
+			log.error("Error in create Company. " + e.getMessage());
 			return ResponseEntity.badRequest().body(response);
 		}
+		log.info("Created company success.");
 		return ResponseEntity.ok(response);
 	}
 	
@@ -82,9 +90,11 @@ public class CompanyController {
 			response.setData(company);
 			
 		}catch (Exception e) {
+			log.error("Erro in update company. " + e.getMessage());
 			response.getErrors().add("Company it can't be updated. " + e.getMessage());
 			return ResponseEntity.badRequest().body(response);
 		}
+		log.info("Updated company success.");
 		return ResponseEntity.ok(response);
 	}
 	
@@ -109,12 +119,14 @@ public class CompanyController {
 		Response<Company> response = new Response<>();
 		try {
 			if(StringUtils.isAllBlank(id)) {
+				log.error("Find by id: id it can't be null or empty. " + id);
 				response.getErrors().add("Find by id: id it can't be null or empty. " + id);
 				throw new Exception("Paramter id invalid:" + id);
 			}
 			Optional<Company> companyOptional = companyService.findById(id);
 			
 			if(!companyOptional.isPresent()) {
+				log.error("Register not found with id: " + id);
 				response.getErrors().add("Register not found with id: " + id);
 				throw new Exception("Register not found by id:" + id);
 			}
@@ -122,9 +134,11 @@ public class CompanyController {
 			response.setData(companyOptional.get());
 			
 		}catch (Exception e) {
+			log.error("Error find company by id. " + e.getMessage());
 			response.getErrors().add("Error find company by id. " + e.getMessage());
 			return ResponseEntity.badRequest().body(response);
 		}
+		log.info("Find company success.");
 		return ResponseEntity.ok(response);
 	}
 	
@@ -134,21 +148,25 @@ public class CompanyController {
 		try {
 			
 			if(registerNumber == null) {
+				log.error("Find by registerNumber: registerNumber it can't be null or empty. " + registerNumber);
 				response.getErrors().add("Find by registerNumber: registerNumber it can't be null or empty. " + registerNumber);
 				throw new Exception("Paramter registerNumber invalid:" + registerNumber);
 			}
 			Company company = companyService.findByRegisterNumber(registerNumber);
 			
 			if(company == null){
+				log.error("Register not found with registerNumber: " + registerNumber);
 				response.getErrors().add("Register not found with registerNumber: " + registerNumber);
 				throw new Exception("Register not found by registerNumber:" + registerNumber);
 			}
 			
 			response.setData(company);
 		}catch (Exception e) {
+			log.error("Error find by company by registerNumber. " + e.getMessage());
 			response.getErrors().add("Error find by company by registerNumber. " + e.getMessage());
 			return ResponseEntity.badRequest().body(response);
 		}
+		log.info("Find company by register number success.");
 		return ResponseEntity.ok(response);
 	}
 	
@@ -157,11 +175,13 @@ public class CompanyController {
 		Response<String> response = new Response<>();
 		try {
 			if(StringUtils.isAllBlank(id)) {
+				log.error("Paramter Id invalid.");
 				response.getErrors().add("Paramter Id invalid.");
 			    throw new Exception("Paramter Id invalid.");
 			}
 			Optional<Company> opt = companyService.findById(id);
 			if(!opt.isPresent()) {
+				log.error("Company not found for delete, id not exist.");
 				response.getErrors().add("Company not found for delete, id not exist.");
 				throw new Exception("Company not found for delete, id not exist."); 
 			}
@@ -173,6 +193,7 @@ public class CompanyController {
 			response.getErrors().add("Error for delete company. " + e.getMessage());
 			return ResponseEntity.badRequest().body(response);
 		}
+		log.info("Deleted company success.");
 		return ResponseEntity.ok(response);
 	}
 }
