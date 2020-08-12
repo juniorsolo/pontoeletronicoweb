@@ -1,12 +1,14 @@
 package com.ponto.eletronicoweb.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import com.ponto.eletronicoweb.entity.Employee;
+import com.ponto.eletronicoweb.entity.Registry;
+
 /**
+ * 12/08/2020
  * 
  * @author junior
  *
  */
-public interface EmployeeRepository extends MongoRepository<Employee, String>{
+public interface RegistryRepository extends MongoRepository<Registry, String> {
 
 }
