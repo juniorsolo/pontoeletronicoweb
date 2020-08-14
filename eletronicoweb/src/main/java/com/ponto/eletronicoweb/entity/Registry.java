@@ -19,7 +19,10 @@ public class Registry {
 	@Id
 	private String id;
 	
-	private LocalDateTime data;
+	/*
+	 *  Date with hours the registry
+	 */
+	private LocalDateTime date;
 	
 	@DBRef
 	private User user;
@@ -33,11 +36,12 @@ public class Registry {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public LocalDateTime getData() {
-		return data;
+	
+	public LocalDateTime getDate() {
+		return date;
 	}
-	public void setData(LocalDateTime data) {
-		this.data = data;
+	public void setDate(LocalDateTime date) {
+		this.date = date;
 	}
 	public User getUser() {
 		return user;

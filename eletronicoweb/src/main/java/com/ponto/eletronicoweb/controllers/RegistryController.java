@@ -1,11 +1,15 @@
 package com.ponto.eletronicoweb.controllers;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +47,7 @@ public class RegistryController {
 		Response<Registry> response = new Response<>();
 		try {
 			Registry regis = new Registry();
-			regis.setData(LocalDateTime.now());
+			regis.setDate(LocalDateTime.now());
 			regis.setUser(userService.findById("5f3315d2d44ead50ef7a2217").get());
 		
 			regis = registryService.create(regis);
@@ -70,4 +74,26 @@ public class RegistryController {
 		}
 		return ResponseEntity.ok(response);
 	}
+	
+	@GetMapping(value = "period/{idUser}")
+	public ResponseEntity<Response<Page<Registry>>> findByPeriod(@PathVariable String idUser){
+		Response<Page<Registry>> response = new Response<>();
+		Page<Registry> registryList = null;
+		try {
+			LocalDateTime startDate = LocalDateTime.of(2020, Month.AUGUST, 01, 00, 00);
+			LocalDateTime endDate = LocalDateTime.of(2020, Month.AUGUST, 30, 23, 59);
+			
+			Pageable pages = PageRequest.of(0, 30);
+			
+		    registryList = registryService.findPeriodByUserId(startDate, endDate, idUser, pages);
+			
+			response.setData(registryList);
+		}catch (Exception e) {
+			log.error("Error find registry. " + e.getMessage());
+			response.getErrors().add(e.getMessage());
+			ResponseEntity.badRequest().body(response);
+		}
+		return ResponseEntity.ok(response);
+	}
+	
 }

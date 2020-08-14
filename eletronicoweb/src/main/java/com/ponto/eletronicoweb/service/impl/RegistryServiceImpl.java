@@ -1,8 +1,11 @@
 package com.ponto.eletronicoweb.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ponto.eletronicoweb.entity.Registry;
@@ -39,6 +42,10 @@ public class RegistryServiceImpl implements RegistryService{
 	@Override
 	public void deleteById(String id) {
 		registryRepo.deleteById(id);
+	}
+	
+	public Page<Registry> findPeriodByUserId(LocalDateTime stardDate, LocalDateTime endDate, String userId,  Pageable pages){
+		return registryRepo.findByDateBetweenAndUserIdOrderByDate(stardDate, endDate, userId, pages);
 	}
 
 }

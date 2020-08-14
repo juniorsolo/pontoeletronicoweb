@@ -1,5 +1,9 @@
 package com.ponto.eletronicoweb.repository;
 
+import java.time.LocalDateTime;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import com.ponto.eletronicoweb.entity.Registry;
 
@@ -10,5 +14,8 @@ import com.ponto.eletronicoweb.entity.Registry;
  *
  */
 public interface RegistryRepository extends MongoRepository<Registry, String> {
+	
+	Page<Registry>  findByDateBetweenAndUserIdOrderByDate(LocalDateTime startDate, LocalDateTime endDate, String userId,  Pageable pages);
+	
 
 }
