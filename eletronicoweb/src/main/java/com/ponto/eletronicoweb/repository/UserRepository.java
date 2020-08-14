@@ -11,5 +11,5 @@ import com.ponto.eletronicoweb.entity.User;
  *
  */
 public interface UserRepository extends MongoRepository<User, String>{
-
+	public User findByLoginAndPassword(String login, String password);
 }

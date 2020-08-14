@@ -76,4 +76,14 @@ public class UserServiceImpl implements UserService{
 		userRepo.deleteById(id);
 	}
 
+	@Override
+	public User findByLoginAndPassword(String login, String password) throws ServiceException {
+		if(StringUtils.isAllBlank(login) || StringUtils.isAllBlank(password)) {
+			log.error("Login or password can't be blank.");
+			throw new ServiceException("Login or password is empty, both can't be blank.");
+			
+		}
+		return userRepo.findByLoginAndPassword(login, password);
+	}
+
 }

@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ponto.eletronicoweb.entity.Registry;
+import com.ponto.eletronicoweb.entity.User;
 import com.ponto.eletronicoweb.response.Response;
 import com.ponto.eletronicoweb.service.RegistryService;
 import com.ponto.eletronicoweb.service.UserService;
@@ -43,12 +45,16 @@ public class RegistryController {
 	UserService userService;
 	
 	@PostMapping
-	public ResponseEntity<Response<Registry>> create(){
+	public ResponseEntity<Response<Registry>> create(@RequestBody User user){
 		Response<Registry> response = new Response<>();
 		try {
+			
+		   User userFinded = userService.findByLoginAndPassword(user.getLogin(), user.getPassword());
+			
+			
 			Registry regis = new Registry();
 			regis.setDate(LocalDateTime.now());
-			regis.setUser(userService.findById("5f3315d2d44ead50ef7a2217").get());
+			regis.setUser(userFinded);
 		
 			regis = registryService.create(regis);
 			response.setData(regis);
