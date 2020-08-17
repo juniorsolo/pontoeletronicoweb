@@ -40,6 +40,7 @@ public class Registry {
 	public LocalDateTime getDate() {
 		return date;
 	}
+
 	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}

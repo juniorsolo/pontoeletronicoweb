@@ -24,6 +24,7 @@ import com.ponto.eletronicoweb.entity.User;
 import com.ponto.eletronicoweb.response.Response;
 import com.ponto.eletronicoweb.service.RegistryService;
 import com.ponto.eletronicoweb.service.UserService;
+import com.ponto.eletronicoweb.service.utils.DateUtils;
 
 /**
  *     12/08/2020
@@ -58,6 +59,7 @@ public class RegistryController {
 		
 			regis = registryService.create(regis);
 			response.setData(regis);
+			log.info("Create registry with success.");
 		}catch (Exception e) {
 			log.error("Error create registry. " + e.getMessage());
 			response.getErrors().add(e.getMessage());
@@ -73,6 +75,7 @@ public class RegistryController {
 			Optional<Registry> regis = registryService.findById(id);
 			
 			response.setData(regis.get());
+			log.info("Find Registry by id with success.");
 		}catch (Exception e) {
 			log.error("Error find registry. " + e.getMessage());
 			response.getErrors().add(e.getMessage());
@@ -86,14 +89,15 @@ public class RegistryController {
 		Response<Page<Registry>> response = new Response<>();
 		Page<Registry> registryList = null;
 		try {
-			LocalDateTime startDate = LocalDateTime.of(2020, Month.AUGUST, 01, 00, 00);
-			LocalDateTime endDate = LocalDateTime.of(2020, Month.AUGUST, 30, 23, 59);
+			LocalDateTime startDate = DateUtils.firstDateOfMonth();
+			LocalDateTime endDate = DateUtils.lastDateOfMonth();
 			
 			Pageable pages = PageRequest.of(0, 30);
 			
 		    registryList = registryService.findPeriodByUserId(startDate, endDate, idUser, pages);
 			
 			response.setData(registryList);
+			log.info("find registry by period with success.");
 		}catch (Exception e) {
 			log.error("Error find registry. " + e.getMessage());
 			response.getErrors().add(e.getMessage());
