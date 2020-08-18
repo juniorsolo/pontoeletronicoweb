@@ -2,8 +2,10 @@ package com.ponto.eletronicoweb.service.impl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
+
 @Service
 public class ReportServiceImpl implements ReportService{
 	
@@ -35,18 +38,18 @@ public class ReportServiceImpl implements ReportService{
 		
 	public String exportReportRegistryByUser(String reportFormat, String userId)  throws FileNotFoundException, JRException{
 		
-		Pageable pages = PageRequest.of(0, 200);
-		//Page<Registry> registryList = registryService.findPeriodByUserId(DateUtils.firstDateOfMonth(), DateUtils.lastDateOfMonth(), userId, pages);
+		
+		List<Registry> registryList = registryService.findPeriodByUserIdReport(DateUtils.firstDateOfMonth(), DateUtils.lastDateOfMonth(), userId);
 		
 		File file = ResourceUtils.getFile("classpath:FolhaDePonto.jrxml");
 		
 		JasperReport jasperReport = JasperCompileManager.compileReport( file.getAbsolutePath());
-		//JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource((Collection<Registry>) registryList);
+		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(registryList);
 		
 		Map<String, Object> parameters = new HashMap<>();
-		parameters.put("NomeEmpresa", "Ótica HeLo");
+		parameters.put("nomeEmpresa", "Ótica HeLo");
 		
-		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters);
+		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
 		
 		if(reportFormat.equalsIgnoreCase("html")) {
 			JasperExportManager.exportReportToHtmlFile(jasperPrint, "c:\\dev\\" + "folha_de_ponto.html");
@@ -56,4 +59,6 @@ public class ReportServiceImpl implements ReportService{
 		
 		return "report generate with success!";
 	}
+	
+
 }

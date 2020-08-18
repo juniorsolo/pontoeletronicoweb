@@ -1,6 +1,7 @@
 package com.ponto.eletronicoweb.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,10 @@ public class RegistryServiceImpl implements RegistryService{
 	
 	public Page<Registry> findPeriodByUserId(LocalDateTime stardDate, LocalDateTime endDate, String userId,  Pageable pages){
 		return registryRepo.findByDateBetweenAndUserIdOrderByDate(stardDate, endDate, userId, pages);
+	}
+	
+	public List<Registry> findPeriodByUserIdReport(LocalDateTime stardDate, LocalDateTime endDate, String userId){
+		return registryRepo.findByDateBetweenAndUserIdOrderByDate(stardDate, endDate, userId);
 	}
 
 }
