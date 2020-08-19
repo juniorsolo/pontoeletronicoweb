@@ -3,18 +3,16 @@ package com.ponto.eletronicoweb.service.impl;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
+import com.ponto.eletronicoweb.dto.ConverterRegistry;
+import com.ponto.eletronicoweb.dto.RegistryDTO;
 import com.ponto.eletronicoweb.entity.Registry;
 import com.ponto.eletronicoweb.service.RegistryService;
 import com.ponto.eletronicoweb.service.ReportService;
@@ -40,14 +38,30 @@ public class ReportServiceImpl implements ReportService{
 		
 		
 		List<Registry> registryList = registryService.findPeriodByUserIdReport(DateUtils.firstDateOfMonth(), DateUtils.lastDateOfMonth(), userId);
+		List<RegistryDTO> registryDTOList = new ArrayList<>();
+		
+		if(registryList != null && !registryList.isEmpty()) {
+			registryDTOList = ConverterRegistry.forRegistryDTO(registryList);
+		}
 		
 		File file = ResourceUtils.getFile("classpath:FolhaDePonto.jrxml");
 		
 		JasperReport jasperReport = JasperCompileManager.compileReport( file.getAbsolutePath());
-		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(registryList);
+		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(registryDTOList);
 		
 		Map<String, Object> parameters = new HashMap<>();
-		parameters.put("nomeEmpresa", "Ótica HeLo");
+		parameters.put("corporationName", "Óticas Beatriz LTDA.");
+		parameters.put("corporationDocument", "27.712.011/0001-50");
+		parameters.put("corporationAddress", "Rua Cerqueira Cesar, 105");
+		parameters.put("corporationZipCode", "06823-800");
+		parameters.put("corporationCity", "São Paulo");
+		parameters.put("corporationState", "SP");
+		parameters.put("employeeOccupation", "Gerente");
+		parameters.put("employeeName", "Taynan Tayne Pereira da Silva");
+		parameters.put("employeeDocument", "453.654.789-80");
+		parameters.put("month", "Agosto");
+		parameters.put("year", "2020");
+		
 		
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
 		
