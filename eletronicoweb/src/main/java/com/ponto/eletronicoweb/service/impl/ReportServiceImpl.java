@@ -59,9 +59,8 @@ public class ReportServiceImpl implements ReportService{
 		parameters.put("employeeOccupation", "Gerente");
 		parameters.put("employeeName", "Taynan Tayne Pereira da Silva");
 		parameters.put("employeeDocument", "453.654.789-80");
-		parameters.put("month", "Agosto");
-		parameters.put("year", "2020");
-		
+		parameters.put("monthYearReport", "Agosto-2020");
+
 		
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
 		

@@ -10,8 +10,7 @@
 	<parameter name="employeeOccupation" class="java.lang.String"/>
 	<parameter name="employeeName" class="java.lang.String"/>
 	<parameter name="employeeDocument" class="java.lang.String"/>
-	<parameter name="month" class="java.lang.String"/>
-	<parameter name="year" class="java.lang.String"/>
+	<parameter name="monthYearReport" class="java.lang.String"/>
 	<field name="day" class="java.lang.String"/>
 	<field name="register1" class="java.lang.String"/>
 	<field name="register2" class="java.lang.String"/>
@@ -19,6 +18,7 @@
 	<field name="register4" class="java.lang.String"/>
 	<field name="register5" class="java.lang.String"/>
 	<field name="register6" class="java.lang.String"/>
+	<field name="daySum" class="java.lang.String"/>
 	<background>
 		<band/>
 	</background>
@@ -105,7 +105,7 @@
 					<text><![CDATA[CEP:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="72" y="34" width="194" height="13" uuid="08389ab7-f8ea-4a90-b8b4-f090876cd983">
+					<reportElement x="72" y="34" width="194" height="13" forecolor="#FFFFFF" uuid="08389ab7-f8ea-4a90-b8b4-f090876cd983">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement>
@@ -114,13 +114,49 @@
 					<textFieldExpression><![CDATA[$P{corporationName}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="57" y="49" width="209" height="13" uuid="cda53a57-7ea4-447f-8021-5e0e0de330de">
+					<reportElement x="57" y="49" width="209" height="13" forecolor="#FFFFFF" uuid="cda53a57-7ea4-447f-8021-5e0e0de330de">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement>
 						<font fontName="Arial" size="11"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{corporationAddress}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="306" y="34" width="194" height="13" forecolor="#FFFFFF" uuid="d98dc46e-a5bf-409f-970b-cf6a39e9f57e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{corporationDocument}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="298" y="49" width="69" height="13" forecolor="#FFFFFF" uuid="d6db6c12-1aa4-49e5-915e-969a8471827b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{corporationZipCode}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="408" y="49" width="125" height="13" forecolor="#FFFFFF" uuid="af088208-8e9d-447d-942f-d0060b6c0f60">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{corporationCity}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="560" y="49" width="24" height="13" forecolor="#FFFFFF" uuid="dacd5f75-d997-453e-ab3d-57b263184abc">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{corporationState}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
@@ -160,7 +196,7 @@
 					<text><![CDATA[Funcionário:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="462" y="2" width="27" height="13" forecolor="#050505" uuid="c7710b67-9c43-4194-b867-5eb97715e838">
+					<reportElement x="484" y="2" width="27" height="13" forecolor="#050505" uuid="c7710b67-9c43-4194-b867-5eb97715e838">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
@@ -170,7 +206,7 @@
 					<text><![CDATA[Mês:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="3" y="18" width="38" height="13" forecolor="#050505" uuid="88007370-70ca-4bc6-ba2f-eb54039b9b6a">
+					<reportElement x="3" y="17" width="38" height="13" forecolor="#050505" uuid="88007370-70ca-4bc6-ba2f-eb54039b9b6a">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
@@ -179,6 +215,42 @@
 					</textElement>
 					<text><![CDATA[Cargo:]]></text>
 				</staticText>
+				<textField>
+					<reportElement x="69" y="2" width="221" height="13" uuid="73f80fe1-66bb-4c84-b92b-e73b54921b88">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{employeeName}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="40" y="17" width="250" height="13" uuid="813db239-e4f5-49b7-bbf8-f852f6762456">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{employeeOccupation}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="340" y="2" width="115" height="13" uuid="5affb932-e7c7-43c4-bba7-60c12409be88">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{employeeDocument}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="510" y="2" width="75" height="13" uuid="804d39f3-f955-4757-9cff-c4ae517b2f5a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{monthYearReport}]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</pageHeader>
@@ -261,11 +333,20 @@
 					</textElement>
 					<text><![CDATA[6ª Marc]]></text>
 				</staticText>
+				<staticText>
+					<reportElement x="350" y="1" width="70" height="13" forecolor="#050505" uuid="b5593e72-9502-47a0-90a7-1c1d8f6d9f82">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Horas Trab.]]></text>
+				</staticText>
 			</frame>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="15">
+		<band height="17">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
 				<reportElement x="1" y="0" width="72" height="15" uuid="c71c76c2-b306-4e1d-b625-b8c8104afd97">
@@ -323,6 +404,14 @@
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{register6}]]></textFieldExpression>
 			</textField>
+			<textField pattern="h:mm">
+				<reportElement x="332" y="0" width="70" height="15" isRemoveLineWhenBlank="true" uuid="d0709d7e-5f93-44c4-b50d-112ae99713b2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{daySum} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{daySum}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
@@ -333,13 +422,13 @@
 			<textField>
 				<reportElement mode="Opaque" x="0" y="11" width="515" height="13" backcolor="#E6E6E6" uuid="2cb1ebb5-d402-4cb9-b164-0584244e6015"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement mode="Opaque" x="515" y="11" width="40" height="13" backcolor="#E6E6E6" uuid="6649ecc4-9655-4376-8da0-69636cffe9b4"/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
-			<textField pattern="d,MMM yyyy h:mm:ss">
+			<textField pattern="dd/MM/yyyy hh:mm">
 				<reportElement x="0" y="11" width="100" height="13" uuid="5c225047-fe11-49b8-8f2a-ec16528c4254"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
