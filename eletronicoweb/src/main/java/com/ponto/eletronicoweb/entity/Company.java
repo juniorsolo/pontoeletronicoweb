@@ -7,7 +7,11 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.mongodb.lang.NonNull;
-
+/**
+ * 
+ * @author junior
+ *
+ */
 @Document
 public class Company {
 	
@@ -21,10 +25,14 @@ public class Company {
 	@NonNull
 	private String name;
 	
+	private String document;
+	
+	private Address address;
+	
 	@DBRef(lazy = false)
 	private List<Subsidiary> subsidiaryList;
 
-
+	
 	
 	//Getters and Setters
 	public String getId() {
@@ -59,8 +67,22 @@ public class Company {
 		this.subsidiaryList = subsidiaryList;
 	}
 
-	
+	public String getDocument() {
+		return document;
+	}
 
+	public void setDocument(String document) {
+		this.document = document;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+	
 	
 	
 }

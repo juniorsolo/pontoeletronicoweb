@@ -6,6 +6,12 @@ import java.time.LocalTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 
+ * @author junior
+ * 
+ * Get two String for hours, return at difference between both in nanoSeconds.
+ */
 public class TimeUtils {
 	private static Logger log = LoggerFactory.getLogger(TimeUtils.class);
 	
