@@ -11,7 +11,7 @@ public class Address {
 	
 	private String name;
 	
-	private AddressTypeEnum typeEnum;
+	private AddressTypeEnum typeEnum; 
 		
 	private Integer number;
 	
@@ -23,7 +23,7 @@ public class Address {
 	//Getters and Setters
 	
 	public String getName() {
-		return name;
+		return name;    
 	}
 
 	public void setName(String name) {

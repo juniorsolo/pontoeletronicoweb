@@ -14,7 +14,8 @@ public enum AddressTypeEnum {
 	ALAMEDA("Alameda"),
 	AREA("Área"),
 	ACESSO("Acesso"),
-	RODOVIA("Rodovia");
+	RODOVIA("Rodovia"),
+	OUTROS("Outros");
 
 	private String name;
 
