@@ -84,6 +84,7 @@ public class CompanyServiceImpl implements CompanyService{
 			}
 			companyFinded.get().setRegisterNumber(company.getRegisterNumber());
 			companyFinded.get().setName(company.getName());
+			companyFinded.get().setAddress(company.getAddress());
 			
 			return companyRepo.save(companyFinded.get());
 		}catch (Exception e) {

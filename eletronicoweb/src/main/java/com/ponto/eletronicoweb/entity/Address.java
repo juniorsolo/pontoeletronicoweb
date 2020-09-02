@@ -1,6 +1,7 @@
 package com.ponto.eletronicoweb.entity;
 
 import com.ponto.eletronicoweb.enums.AddressTypeEnum;
+import com.ponto.eletronicoweb.enums.UFEnum;
 /**
  * 
  * @author junior 22/08/2020
@@ -11,13 +12,13 @@ public class Address {
 	
 	private String name;
 	
-	private AddressTypeEnum typeEnum; 
+	private AddressTypeEnum type; 
 		
 	private Integer number;
 	
 	private String city;
 	
-	private String UF;
+	private UFEnum uf;
 
 
 	//Getters and Setters
@@ -30,12 +31,12 @@ public class Address {
 		this.name = name;
 	}
 
-	public AddressTypeEnum getTypeEnum() {
-		return typeEnum;
+	public AddressTypeEnum getType() {
+		return type;
 	}
 
-	public void setTypeEnum(AddressTypeEnum typeEnum) {
-		this.typeEnum = typeEnum;
+	public void setType(AddressTypeEnum type) {
+		this.type = type;
 	}
 
 	public Integer getNumber() {
@@ -54,12 +55,14 @@ public class Address {
 		this.city = city;
 	}
 
-	public String getUF() {
-		return UF;
+	public UFEnum getUf() {
+		return uf;
 	}
 
-	public void setUF(String uF) {
-		UF = uF;
-	}	
-	
+	public void setUf(UFEnum uf) {
+		this.uf = uf;
+	}
+
+
+		
 }

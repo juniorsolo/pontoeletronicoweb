@@ -25,8 +25,6 @@ public class Company {
 	@NonNull
 	private String name;
 	
-	private String document;
-	
 	private Address address;
 	
 	@DBRef(lazy = false)
@@ -65,14 +63,6 @@ public class Company {
 
 	public void setSubsidiaryList(List<Subsidiary> subsidiaryList) {
 		this.subsidiaryList = subsidiaryList;
-	}
-
-	public String getDocument() {
-		return document;
-	}
-
-	public void setDocument(String document) {
-		this.document = document;
 	}
 
 	public Address getAddress() {
