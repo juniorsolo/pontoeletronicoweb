@@ -3,13 +3,12 @@ package com.ponto.eletronicoweb.entity;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.mongodb.lang.NonNull;
 /**
  * 
- * @author junior
+ * @author junior 05/08/2020
  *
  */
 @Document
@@ -27,7 +26,6 @@ public class Company {
 	
 	private Address address;
 	
-	@DBRef(lazy = false)
 	private List<Subsidiary> subsidiaryList;
 
 	

@@ -1,16 +1,12 @@
 package com.ponto.eletronicoweb.entity;
 
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document
 public class Employee {
 		
 	private Long documentNumber;
 	private String name;
 	private String occupation;
 	
-	@DBRef
+
 	private User user;	
 	
 	

@@ -2,34 +2,22 @@ package com.ponto.eletronicoweb.entity;
 
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 /**
  * 
- * @author junior
+ * @author junior 16/07/2020
  *
  */
-@Document
+
 public class Subsidiary {
 	
-	@Id
-	private String id;
 	
 	private String name;	
 	
 
 	private List<Employee> employeeList;
 	
-	//Getters and Setters
 	
-	public String getId() {
-		return id;
-	}    
-
-	public void setId(String id) {
-		this.id = id;
-	}
+	//Getters and Setters
 
 	public String getName() {
 		return name;
@@ -46,7 +34,6 @@ public class Subsidiary {
 	public void setEmployeeList(List<Employee> employeeList) {
 		this.employeeList = employeeList;
 	}
-
 	
 	
 }

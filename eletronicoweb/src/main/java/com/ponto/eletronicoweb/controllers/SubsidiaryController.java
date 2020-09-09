@@ -47,4 +47,20 @@ public class SubsidiaryController {
 		}
 		return ResponseEntity.ok(response);
 	}
+	
+	@GetMapping(value="employee/{name}")
+	public ResponseEntity<Response<Subsidiary>> findByEmployeeName(@PathVariable("name") String name){
+		
+		Response<Subsidiary> response = new Response<>();
+		try {
+			
+			Subsidiary sub = subsidiaryService.findEmployeeDocument(name);
+			response.setData(sub);
+		}catch (Exception e) {
+			log.error("Erro find subsidiary by id. " + e.getMessage());
+			response.getErrors().add(e.getMessage());
+			return ResponseEntity.badRequest().body(response);
+		}
+		return ResponseEntity.ok(response);
+	}
 }

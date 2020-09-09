@@ -11,5 +11,5 @@ import com.ponto.eletronicoweb.entity.Subsidiary;
  */
 public interface SubsidiaryRepository extends MongoRepository<Subsidiary, String> {
 	
-	
+	Subsidiary findByEmployeeListName(String name); 
 }

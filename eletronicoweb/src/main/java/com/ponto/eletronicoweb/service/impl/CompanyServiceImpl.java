@@ -1,7 +1,5 @@
 package com.ponto.eletronicoweb.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,10 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ponto.eletronicoweb.entity.Company;
+import com.ponto.eletronicoweb.entity.Employee;
 import com.ponto.eletronicoweb.entity.Subsidiary;
 import com.ponto.eletronicoweb.repository.CompanyRepository;
 import com.ponto.eletronicoweb.service.CompanyService;
 import com.ponto.eletronicoweb.service.ServiceException;
+import com.ponto.eletronicoweb.service.UserService;
 
 /**
  * 
@@ -30,9 +30,10 @@ public class CompanyServiceImpl implements CompanyService{
 	
 	@Autowired
 	private CompanyRepository companyRepo;
+	
 	@Autowired
-	private SubsidiaryServiceImpl filialservice;
-
+	private UserService userService;
+	
 	@Override
 	public Company create(Company company) throws Exception {
 		
@@ -51,11 +52,15 @@ public class CompanyServiceImpl implements CompanyService{
 		}
 		
 		if(!company.getSubsidiaryList().isEmpty()) {
-			List<Subsidiary> subsidiaryList = company.getSubsidiaryList();
-			company.setSubsidiaryList(new ArrayList<>());
-			
-			for (Subsidiary filial : subsidiaryList) {
-				company.getSubsidiaryList().add(filialservice.create(filial));
+					
+			for (Subsidiary subsidiary : company.getSubsidiaryList()) {
+				
+				if(!subsidiary.getEmployeeList().isEmpty()) {
+					for (Employee employee : subsidiary.getEmployeeList()) {
+						userService.create(employee.getUser());
+					}
+				}
+				
 			}
 		}
 		
@@ -76,15 +81,26 @@ public class CompanyServiceImpl implements CompanyService{
 				throw new ServiceException("Company not exist, can't be updated");
 			}
 			if(!company.getSubsidiaryList().isEmpty()) {
-				companyFinded.get().setSubsidiaryList(new ArrayList<>());
-
-				for (Subsidiary subsidiary : company.getSubsidiaryList()) {					
-					companyFinded.get().getSubsidiaryList().add(filialservice.update(subsidiary));
+				
+				for (Subsidiary subsidiary : company.getSubsidiaryList()) {
+					
+					if(!subsidiary.getEmployeeList().isEmpty()) {
+						for (Employee employee : subsidiary.getEmployeeList()) {
+							//Create or updated user.
+							if(employee.getUser() != null &&  !StringUtils.isAllBlank(employee.getUser().getId())) {
+								userService.update(employee.getUser());
+							}else if (employee.getUser() != null){
+								userService.create(employee.getUser());
+							}
+						}
+					}
+					
 				}
 			}
 			companyFinded.get().setRegisterNumber(company.getRegisterNumber());
 			companyFinded.get().setName(company.getName());
 			companyFinded.get().setAddress(company.getAddress());
+			companyFinded.get().setSubsidiaryList(company.getSubsidiaryList());
 			
 			return companyRepo.save(companyFinded.get());
 		}catch (Exception e) {
@@ -106,11 +122,16 @@ public class CompanyServiceImpl implements CompanyService{
 	@Override
 	public void delete(String id) {
 		Optional<Company> companyFinded =  this.findById(id);
-		if(companyFinded.isPresent() && !companyFinded.get().getSubsidiaryList().isEmpty()) {
-			for(Subsidiary sub : companyFinded.get().getSubsidiaryList()){
-				filialservice.delete(sub.getId());
-			}
+		if(!companyFinded.isPresent()) {
+			log.error("Company id:"+ id +" not exist, can't be deleted.");
 		}
+//		if(companyFinded.isPresent() && !companyFinded.get().getSubsidiaryList().isEmpty()) {
+//			for(Subsidiary sub : companyFinded.get().getSubsidiaryList()){
+//				for(Employee empl: sub.getEmployeeList()) {
+//					
+//				}
+//			}
+//		}
 		companyRepo.deleteById(id);		
 	}
 
