@@ -136,13 +136,7 @@ public class CompanyServiceImpl implements CompanyService{
 		if(!companyFinded.isPresent()) {
 			log.error("Company id:"+ id +" not exist, can't be deleted.");
 		}
-//		if(companyFinded.isPresent() && !companyFinded.get().getSubsidiaryList().isEmpty()) {
-//			for(Subsidiary sub : companyFinded.get().getSubsidiaryList()){
-//				for(Employee empl: sub.getEmployeeList()) {
-//					
-//				}
-//			}
-//		}
+
 		companyRepo.deleteById(id);		
 	}
 
