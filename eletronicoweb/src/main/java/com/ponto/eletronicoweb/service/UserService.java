@@ -10,4 +10,6 @@ public interface UserService {
 	public Optional<User> findById(String id);
 	public void delete(String id);
 	public User findByLoginAndPassword(String login, String password) throws Exception;
+	public Optional<User> findByLogin(String login);
+	
 }

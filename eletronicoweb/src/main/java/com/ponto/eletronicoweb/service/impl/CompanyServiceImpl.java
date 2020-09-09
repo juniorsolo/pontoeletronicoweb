@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.ponto.eletronicoweb.entity.Company;
 import com.ponto.eletronicoweb.entity.Employee;
 import com.ponto.eletronicoweb.entity.Subsidiary;
+import com.ponto.eletronicoweb.entity.User;
 import com.ponto.eletronicoweb.repository.CompanyRepository;
 import com.ponto.eletronicoweb.service.CompanyService;
 import com.ponto.eletronicoweb.service.ServiceException;
@@ -57,7 +58,14 @@ public class CompanyServiceImpl implements CompanyService{
 				
 				if(!subsidiary.getEmployeeList().isEmpty()) {
 					for (Employee employee : subsidiary.getEmployeeList()) {
-						userService.create(employee.getUser());
+						Optional<User> userFinded= userService.findByLogin(employee.getUser().getLogin());
+						if(userFinded.isPresent()) {
+							userFinded.get().setPassword(employee.getUser().getPassword());
+							userFinded.get().setProfile(employee.getUser().getProfile());
+							employee.setUser(userFinded.get());
+						}else {
+							userService.create(employee.getUser());
+						}
 					}
 				}
 				
@@ -87,8 +95,11 @@ public class CompanyServiceImpl implements CompanyService{
 					if(!subsidiary.getEmployeeList().isEmpty()) {
 						for (Employee employee : subsidiary.getEmployeeList()) {
 							//Create or updated user.
-							if(employee.getUser() != null &&  !StringUtils.isAllBlank(employee.getUser().getId())) {
-								userService.update(employee.getUser());
+							Optional<User> userFinded= userService.findByLogin(employee.getUser().getLogin());
+							if(userFinded.isPresent()) {
+								userFinded.get().setPassword(employee.getUser().getPassword());
+								userFinded.get().setProfile(employee.getUser().getProfile());
+								userService.update(userFinded.get());
 							}else if (employee.getUser() != null){
 								userService.create(employee.getUser());
 							}
