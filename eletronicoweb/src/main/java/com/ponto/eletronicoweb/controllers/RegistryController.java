@@ -88,8 +88,8 @@ public class RegistryController {
 		Response<Page<Registry>> response = new Response<>();
 		Page<Registry> registryList = null;
 		try {
-			LocalDateTime startDate = DateUtils.firstDateOfMonth();
-			LocalDateTime endDate = DateUtils.lastDateOfMonth();
+			LocalDateTime startDate = DateUtils.firstDateOfMonthCurrent();
+			LocalDateTime endDate = DateUtils.lastDateOfMonthCurrent();
 			
 			Pageable pages = PageRequest.of(0, 30);
 			

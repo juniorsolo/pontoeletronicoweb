@@ -37,7 +37,7 @@ public class ReportServiceImpl implements ReportService{
 	public String exportReportRegistryByUser(String reportFormat, String userId)  throws FileNotFoundException, JRException{
 		
 		
-		List<Registry> registryList = registryService.findPeriodByUserIdReport(DateUtils.firstDateOfMonth(), DateUtils.lastDateOfMonth(), userId);
+		List<Registry> registryList = registryService.findPeriodByUserIdReport(DateUtils.firstDateOfMonthCurrent(), DateUtils.lastDateOfMonthCurrent(), userId);
 		List<RegistryDTO> registryDTOList = new ArrayList<>();
 		
 		if(registryList != null && !registryList.isEmpty()) {

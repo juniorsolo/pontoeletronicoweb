@@ -1,7 +1,9 @@
 package com.ponto.eletronicoweb.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,5 +91,13 @@ public class ConverterRegistry {
 		registryDTO = new RegistryDTO();
 		count = 1;
 		sum= 0L;
+	}
+	
+	private static List<RegistryDTO>  daysOfMonth(Month month) {
+		List<RegistryDTO> lista = new ArrayList<>();
+		
+		
+		
+		return lista;
 	}
 }
