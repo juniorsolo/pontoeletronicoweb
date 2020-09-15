@@ -13,7 +13,9 @@ import org.springframework.util.ResourceUtils;
 
 import com.ponto.eletronicoweb.dto.ConverterRegistry;
 import com.ponto.eletronicoweb.dto.RegistryDTO;
+import com.ponto.eletronicoweb.entity.Company;
 import com.ponto.eletronicoweb.entity.Registry;
+import com.ponto.eletronicoweb.service.CompanyService;
 import com.ponto.eletronicoweb.service.RegistryService;
 import com.ponto.eletronicoweb.service.ReportService;
 import com.ponto.eletronicoweb.service.utils.DateUtils;
@@ -33,8 +35,14 @@ public class ReportServiceImpl implements ReportService{
 	@Autowired
 	RegistryService registryService;
 	
+	@Autowired
+	CompanyService companyService;
 		
 	public String exportReportRegistryByUser(String reportFormat, String userId)  throws FileNotFoundException, JRException{
+		
+		
+		Company company = companyService.findByUserLogin(4444L);
+		System.out.println(company.getName());
 		
 		int month = 8;
 		int year = 2020;
@@ -42,7 +50,7 @@ public class ReportServiceImpl implements ReportService{
 		List<RegistryDTO> registryDTOList = new ArrayList<>();
 		
 		if(registryList != null && !registryList.isEmpty()) {
-			registryDTOList = ConverterRegistry.forRegistryDTONew(registryList, month, year);
+			registryDTOList = ConverterRegistry.forRegistryDTO(registryList, month, year);
 		}
 		
 		File file = ResourceUtils.getFile("classpath:FolhaDePonto.jrxml");

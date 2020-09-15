@@ -131,6 +131,11 @@ public class CompanyServiceImpl implements CompanyService{
 	}
 	
 	@Override
+	public Company findByUserLogin(Long login) {
+		return companyRepo.findBySubsidiaryListEmployeeListDocumentNumber(login);
+	}
+	
+	@Override
 	public void delete(String id) {
 		Optional<Company> companyFinded =  this.findById(id);
 		if(!companyFinded.isPresent()) {

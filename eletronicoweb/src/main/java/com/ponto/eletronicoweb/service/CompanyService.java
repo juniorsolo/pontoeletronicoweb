@@ -9,6 +9,7 @@ public interface CompanyService {
 	public Company update(Company empresa) throws Exception;
 	public Optional<Company> findById(String id);
 	public Company findByRegisterNumber(Long registerNumber);
+	public Company findByUserLogin(Long login);
 	public void delete(String id);
 	public Iterable<Company> findAll(int page, int size);
 }

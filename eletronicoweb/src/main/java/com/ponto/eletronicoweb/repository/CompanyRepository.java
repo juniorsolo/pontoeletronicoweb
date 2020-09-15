@@ -12,4 +12,6 @@ import com.ponto.eletronicoweb.entity.Company;
 public interface CompanyRepository extends MongoRepository<Company, String>{
 	
 	Company findByRegisterNumber(Long registerNumber);
+	
+	Company findBySubsidiaryListEmployeeListDocumentNumber(Long documentNumber);
 }
