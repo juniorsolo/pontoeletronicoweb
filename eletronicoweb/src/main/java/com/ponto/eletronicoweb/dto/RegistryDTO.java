@@ -1,5 +1,7 @@
 package com.ponto.eletronicoweb.dto;
 
+import java.time.LocalDateTime;
+
 /**
  * 
  * @author junior 18/08/2020
@@ -8,7 +10,9 @@ package com.ponto.eletronicoweb.dto;
  */
 public class RegistryDTO {
 		
-	private String day;
+	private LocalDateTime day;
+	private String dayFormated;
+	private String dayWeek;
 	private String register1;
 	private String register2;
 	private String register3;
@@ -18,11 +22,23 @@ public class RegistryDTO {
 	private String daySum;
 	
 	
-	public String getDay() {
+	public LocalDateTime getDay() {
 		return day;
 	}
-	public void setDay(String day) {
+	public void setDay(LocalDateTime day) {
 		this.day = day;
+	}	
+	public String getDayFormated() {
+		return dayFormated;
+	}
+	public void setDayFormated(String dayFormated) {
+		this.dayFormated = dayFormated;
+	}
+	public String getDayWeek() {
+		return dayWeek;
+	}
+	public void setDayWeek(String dayWeek) {
+		this.dayWeek = dayWeek;
 	}
 	public String getRegister1() {
 		return register1;

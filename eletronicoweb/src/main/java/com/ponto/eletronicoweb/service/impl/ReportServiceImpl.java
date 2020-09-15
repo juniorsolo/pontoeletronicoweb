@@ -36,12 +36,13 @@ public class ReportServiceImpl implements ReportService{
 		
 	public String exportReportRegistryByUser(String reportFormat, String userId)  throws FileNotFoundException, JRException{
 		
-		
-		List<Registry> registryList = registryService.findPeriodByUserIdReport(DateUtils.firstDateOfMonthCurrent(), DateUtils.lastDateOfMonthCurrent(), userId);
+		int month = 8;
+		int year = 2020;
+		List<Registry> registryList = registryService.findPeriodByUserIdReport(DateUtils.firstDateOfMonth(month, year), DateUtils.lastDateOfMonth(month, year), userId);
 		List<RegistryDTO> registryDTOList = new ArrayList<>();
 		
 		if(registryList != null && !registryList.isEmpty()) {
-			registryDTOList = ConverterRegistry.forRegistryDTO(registryList);
+			registryDTOList = ConverterRegistry.forRegistryDTONew(registryList, month, year);
 		}
 		
 		File file = ResourceUtils.getFile("classpath:FolhaDePonto.jrxml");
