@@ -169,6 +169,34 @@ public class CompanyController {
 		return ResponseEntity.ok(response);
 	}
 	
+	@GetMapping(value= "login/{loginNumber}")
+	public ResponseEntity<Response<Company>> findByLoginNumber(@PathVariable("loginNumber") Long login){
+		Response<Company> response = new Response<>();
+		try {
+			
+			if(login == null || login == 0L) {
+				log.error("Find company by login: login it can't be null or empty. " + login);
+				response.getErrors().add("Find company by login: login it can't be null or zero. " + login);
+				throw new Exception("Paramter login invalid:" + login);
+			}
+			Company company = companyService.findByUserLogin(login);
+			
+			if(company == null){
+				log.error("Company not found with login: " + login);
+				response.getErrors().add("Company not found with login: " + login);
+				throw new Exception("Company not found by login:" + login);
+			}
+			
+			response.setData(company);
+		}catch (Exception e) {
+			log.error("Error find by company by login. " + e.getMessage());
+			response.getErrors().add("Error find by company by login. " + e.getMessage());
+			return ResponseEntity.badRequest().body(response);
+		}
+		log.info("Find company by register number success.");
+		return ResponseEntity.ok(response);
+	}
+	
 	@DeleteMapping(value="{id}")
 	public ResponseEntity<Response<String>> delete(@PathVariable("id") String id){
 		Response<String> response = new Response<>();

@@ -18,6 +18,8 @@ public class Address {
 	
 	private String city;
 	
+	private String postalCode;
+	
 	private UFEnum uf;
 
 
@@ -63,6 +65,13 @@ public class Address {
 		this.uf = uf;
 	}
 
+	public String getPostalCode() {
+		return postalCode;
+	}
+
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
 
 		
 }

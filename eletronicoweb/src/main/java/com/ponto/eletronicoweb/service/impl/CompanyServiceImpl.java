@@ -1,5 +1,6 @@
 package com.ponto.eletronicoweb.service.impl;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -132,7 +133,24 @@ public class CompanyServiceImpl implements CompanyService{
 	
 	@Override
 	public Company findByUserLogin(Long login) {
-		return companyRepo.findBySubsidiaryListEmployeeListDocumentNumber(login);
+		Company company = companyRepo.findBySubsidiaryListEmployeeListDocumentNumber(login);
+		
+		if(company == null) {
+			return null;
+		}
+		
+		for (Subsidiary subsi : company.getSubsidiaryList()) {
+		   Optional<Employee> em = subsi.getEmployeeList().stream().filter(e -> e.getDocumentNumber().equals(login)).findFirst();
+		   if(em.isPresent()) {
+			 subsi.setEmployeeList(new ArrayList<>());
+			 subsi.getEmployeeList().add(em.get());
+			 company.getSubsidiaryList().removeIf(s -> !s.getName().equals(subsi.getName()));
+			 break;
+		   }
+		}
+		
+		return company;
+		
 	}
 	
 	@Override

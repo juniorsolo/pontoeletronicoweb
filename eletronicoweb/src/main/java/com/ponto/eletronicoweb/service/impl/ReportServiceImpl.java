@@ -2,6 +2,7 @@ package com.ponto.eletronicoweb.service.impl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,11 +39,13 @@ public class ReportServiceImpl implements ReportService{
 	@Autowired
 	CompanyService companyService;
 		
-	public String exportReportRegistryByUser(String reportFormat, String userId)  throws FileNotFoundException, JRException{
+	public String exportReportRegistryByUser(String reportFormat, String userId)  throws FileNotFoundException, JRException, Exception{
 		
 		
 		Company company = companyService.findByUserLogin(4444L);
-		System.out.println(company.getName());
+		if(company == null) {
+			throw new Exception("cannot find company by login for make report.");
+		}
 		
 		int month = 8;
 		int year = 2020;
@@ -59,16 +62,16 @@ public class ReportServiceImpl implements ReportService{
 		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(registryDTOList);
 		
 		Map<String, Object> parameters = new HashMap<>();
-		parameters.put("corporationName", "Óticas Beatriz LTDA.");
-		parameters.put("corporationDocument", "27.712.011/0001-50");
-		parameters.put("corporationAddress", "Rua Cerqueira Cesar, 105");
-		parameters.put("corporationZipCode", "06823-800");
-		parameters.put("corporationCity", "São Paulo");
-		parameters.put("corporationState", "SP");
-		parameters.put("employeeOccupation", "Gerente");
-		parameters.put("employeeName", "Taynan Tayne Pereira da Silva");
-		parameters.put("employeeDocument", "453.654.789-80");
-		parameters.put("monthYearReport", "Agosto-2020");
+		parameters.put("corporationName", company.getName());
+		parameters.put("corporationDocument", company.getRegisterNumber().toString());
+		parameters.put("corporationAddress", company.getAddress().getType() + " " + company.getAddress().getName() + ", " + company.getAddress().getNumber());
+		parameters.put("corporationZipCode", company.getAddress().getPostalCode());
+		parameters.put("corporationCity", company.getAddress().getCity());
+		parameters.put("corporationState", company.getAddress().getUf().toString());
+		parameters.put("employeeOccupation", company.getSubsidiaryList().get(0).getEmployeeList().get(0).getOccupation());
+		parameters.put("employeeName", company.getSubsidiaryList().get(0).getEmployeeList().get(0).getName());
+		parameters.put("employeeDocument", company.getSubsidiaryList().get(0).getEmployeeList().get(0).getDocumentNumber().toString());
+		parameters.put("monthYearReport", Month.of(month) +"-"+ year);
 
 		
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);

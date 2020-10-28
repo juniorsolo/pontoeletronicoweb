@@ -6,6 +6,6 @@ import net.sf.jasperreports.engine.JRException;
 
 public interface ReportService {
 	
-	public String exportReportRegistryByUser(String reportFormat, String userId) throws FileNotFoundException, JRException;
+	public String exportReportRegistryByUser(String reportFormat, String userId) throws FileNotFoundException, JRException, Exception;
 	
 }
